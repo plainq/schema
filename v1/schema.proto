@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package v1;
+option go_package = "github.com/plainq/go/v1";
+
+// PlainQ service represents logic of work with PlainQ queue broker.
+service PlainQService {
+  // Send sends message to the queue.
+  rpc Send (SendRequest) returns (SendResponse) {}
+
+  // SendStream starts to stream messages to the queue.
+  rpc SendStream (stream SendStreamRequest) returns (SendStreamResponse) {}
+
+  // Receive receives message from the queue.
+  rpc Receive (ReceiveRequest) returns (ReceiveResponse) {}
+
+  // ReceiveStream asks queue to start streaming messages to the client.
+  rpc ReceiveStream (ReceiveStreamRequest) returns (stream ReceiveStreamResponse) {}
+
+  // Delete deletes message from the queue.
+  rpc Delete (DeleteRequest) returns (DeleteResponse) {}
+
+  // CreateQueue creates new queue.
+  rpc CreateQueue (CreateQueueRequest) returns (CreateQueueResponse) {}
+
+  // DescribeQueue returns information about specified queue.
+  rpc DescribeQueue (DescribeQueueRequest) returns (DescribeQueueResponse) {}
+
+  // UpdateQueue updates queue properties.
+  rpc UpdateQueue (UpdateQueueRequest) returns (UpdateQueueResponse) {}
+
+  // DeleteQueue deletes queue.
+  rpc DeleteQueue (DeleteQueueRequest) returns (DeleteQueueResponse) {}
+
+  // PurgeQueue deletes all messages from the queue.
+  rpc PurgeQueue (PurgeQueueRequest) returns (PurgeQueueResponse) {}
+
+  // List all queues on the server.
+  rpc ListQueues (ListQueuesRequest) returns (ListQueuesResponse) {}
+}
+
+// SendRequest represents the request which sends given Messages
+// to the specified queue.
+message SendRequest {
+  // queue_id represents unique queue identifier.
+  string queue_id = 1;
+  // messages represents an array of messages which will be send to the queue.
+  repeated Message messages = 2;
+}
+
+// SendResponse represents the response to SendRequest which contain information
+// about the result of enqueueing messages that has been sent with request.
+message SendResponse {
+  repeated string message_ids = 1;
+}
+
+message SendStreamRequest{}
+message SendStreamResponse{}
+
+// ReceiveRequest represents the request which receives Messages
+// from the specified queue.
+message ReceiveRequest {
+  // queue_id represents unique queue identifier.
+  string queue_id = 1;
+  // batch_size represents maximum number of messages to receive.
+  // The batch size is limited to 10 messages.
+  // The valid values: from 1 to 10.
+  // If 0 is specified the 1 will be used.
+  uint32 batch_size = 2;
+}
+
+// ReceiveResponse represents the response.
+message ReceiveResponse {
+  // messages represents an array of received messages from the queue.
+  repeated Message messages = 2;
+}
+
+message ReceiveStreamRequest{}
+message ReceiveStreamResponse{}
+
+// Delete message represents the request which will delete specified
+// messages from the queue.
+message DeleteRequest {
+  // queue_id represents unique queue identifier.
+  string queue_id = 1;
+  // message_ids represents an array of message IDs which identifies
+  // he messages that should be deleted from the queue.
+  repeated string message_ids = 2;
+}
+
+// DeleteResponse
+message DeleteResponse {}
+
+// Message represents a message which can be enqueued or dequeued.
+message Message {
+  string id = 1;
+  bytes body = 2;
+}
+
+message MessageMetadata {
+  map<string, MessageMetadataValue> metadata = 1;
+}
+
+message MessageMetadataValue {
+  string type = 1;
+  bytes value = 2;
+}
+
+message CreateQueueRequest {
+  string queue_name = 1;
+  int64 retention_seconds = 2;
+}
+
+message CreateQueueResponse {
+  string queue_id = 1;
+}
+
+message DescribeQueueRequest {
+  string queue_id = 1;
+  string queue_name = 2;
+}
+
+message DescribeQueueResponse {
+  string queue_id = 1;
+  string queue_name = 2;
+  int64 retention_seconds = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message UpdateQueueRequest {}
+message UpdateQueueResponse {}
+message DeleteQueueRequest {}
+message DeleteQueueResponse {}
+
+message PurgeQueueRequest {
+  string queue_id = 1;
+}
+
+message PurgeQueueResponse {
+
+}
+
+message ListQueuesRequest {
+  string queue_prefix = 1;
+}
+
+message ListQueuesResponse {
+  map<string, DescribeQueueResponse> queues = 1;
+}
+
