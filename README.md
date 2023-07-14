@@ -1,4 +1,4 @@
-# plainq protobuf schema
+# `plainq` Protobuf Schema
 
 This repository defines a protobuf schema for communication with 
 plainq server. 

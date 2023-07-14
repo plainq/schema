@@ -8,14 +8,8 @@ service PlainQService {
   // Send sends message to the queue.
   rpc Send (SendRequest) returns (SendResponse) {}
 
-  // SendStream starts to stream messages to the queue.
-  rpc SendStream (stream SendStreamRequest) returns (SendStreamResponse) {}
-
   // Receive receives message from the queue.
   rpc Receive (ReceiveRequest) returns (ReceiveResponse) {}
-
-  // ReceiveStream asks queue to start streaming messages to the client.
-  rpc ReceiveStream (ReceiveStreamRequest) returns (stream ReceiveStreamResponse) {}
 
   // Delete deletes message from the queue.
   rpc Delete (DeleteRequest) returns (DeleteResponse) {}
@@ -54,15 +48,12 @@ message SendResponse {
   repeated string message_ids = 1;
 }
 
-message SendStreamRequest{}
-message SendStreamResponse{}
-
 // ReceiveRequest represents the request which receives Messages
 // from the specified queue.
 message ReceiveRequest {
-  // queue_id represents unique queue identifier.
+  // Represents unique queue identifier.
   string queue_id = 1;
-  // batch_size represents maximum number of messages to receive.
+  // Represents maximum number of messages to receive.
   // The batch size is limited to 10 messages.
   // The valid values: from 1 to 10.
   // If 0 is specified the 1 will be used.
@@ -74,9 +65,6 @@ message ReceiveResponse {
   // messages represents an array of received messages from the queue.
   repeated Message messages = 2;
 }
-
-message ReceiveStreamRequest{}
-message ReceiveStreamResponse{}
 
 // Delete message represents the request which will delete specified
 // messages from the queue.
@@ -128,9 +116,18 @@ message DescribeQueueResponse {
   int64 updated_at = 5;
 }
 
-message UpdateQueueRequest {}
+message UpdateQueueRequest {
+  string queue_id = 1;
+  string new_queue_name = 2;
+}
+
 message UpdateQueueResponse {}
-message DeleteQueueRequest {}
+
+message DeleteQueueRequest {
+  string queue_id = 1;
+  bool force = 2;
+}
+
 message DeleteQueueResponse {}
 
 message PurgeQueueRequest {
@@ -138,7 +135,7 @@ message PurgeQueueRequest {
 }
 
 message PurgeQueueResponse {
-
+  int64 messages_count = 1;
 }
 
 message ListQueuesRequest {
