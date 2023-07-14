@@ -5,3 +5,5 @@ plainq server.
 
 Any gRPC compatible language can use this schema to implement a
 custom client for communication with plainq server.
+
+## Buf Schema Registry
