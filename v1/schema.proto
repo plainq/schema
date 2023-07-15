@@ -20,9 +20,6 @@ service PlainQService {
   // DescribeQueue returns information about specified queue.
   rpc DescribeQueue (DescribeQueueRequest) returns (DescribeQueueResponse) {}
 
-  // UpdateQueue updates queue properties.
-  rpc UpdateQueue (UpdateQueueRequest) returns (UpdateQueueResponse) {}
-
   // DeleteQueue deletes queue.
   rpc DeleteQueue (DeleteQueueRequest) returns (DeleteQueueResponse) {}
 
