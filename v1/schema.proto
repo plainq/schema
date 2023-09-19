@@ -30,68 +30,142 @@ service PlainQService {
   rpc Delete (DeleteRequest) returns (DeleteResponse) {}
 }
 
-// SendMessage represents a message which can be enqueued or dequeued.
+// SendMessage represents a message which should be enqueued.
 message SendMessage {
+  // body represents the message content as sequence of bytes.
   bytes body = 1;
 }
 
-// ReceiveMessage represents a message which can be enqueued or dequeued.
+// ReceiveMessage represents a dequeued message.
 message ReceiveMessage {
+  // id represents unique message identifier.
   string id = 1;
+
+  // body represents the message content as sequence of bytes.
   bytes body = 2;
 }
 
+// ListQueuesRequest represents a request to list queues.
 message ListQueuesRequest {
+  // queue_prefix can be specified to search queues names of which starts with this prefix.
   string queue_prefix = 1;
 }
 
+// ListQueuesResponse represents a response to ListQueuesRequest which
+// holds a map of queue names to queue properties.
 message ListQueuesResponse {
+  // queues represents a map of queue names to queue properties.
   map<string, DescribeQueueResponse> queues = 1;
 }
 
+// DescribeQueueRequest represents a request to describe specified queue.
+// Queue can be searched by queue_id or by queue_name.
+// If both are set the queue_id will be used.
 message DescribeQueueRequest {
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
+
+  // queue_name represents the name of the queue.
   string queue_name = 2;
 }
 
+// DescribeQueueResponse provides detailed information about a queue.
 message DescribeQueueResponse {
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
+
+  // queue_name represents the name of the queue.
   string queue_name = 2;
+
+  // created_at denotes the timestamp when the queue was created.
   int64 created_at = 3;
+
+  // retention_period_seconds specifies the time after which messages in the queue expire.
   int64 retention_period_seconds = 4;
+
+  // visibility_timeout_seconds is the time a message stays invisible after being read.
   int64 visibility_timeout_seconds = 5;
+
+  // max_receive_attempts defines the maximum number of times a message can be read before it is deleted.
+  uint32 max_receive_attempts = 6;
 }
 
+// CreateQueueRequest represents a request to create a queue.
 message CreateQueueRequest {
+  // queue_name represents the name of the queue.
   string queue_name = 1;
+
+  // retention_period_seconds specifies the time after which messages in the queue expire.
   int64 retention_period_seconds = 2;
+
+  // visibility_timeout_seconds is the time a message stays invisible after being read.
   int64 visibility_timeout_seconds = 3;
+
+  // max_receive_attempts defines the maximum number of times a message can be read before it is deleted.
+  uint32 max_receive_attempts = 4;
+
+  // drop_policy defines queue behaviour when the retention_period_seconds or max_receive_attempts is reached.
+  DropPolicy drop_policy = 5;
 }
 
+// DropPolicy represents a queue policy that a
+message DropPolicy {
+  // Policy represents an enumeration of supported policies.
+  enum Policy {
+    // Drop is a default policy.
+    // When queue has to apply the drop policy to the message, the
+    // message will be dropped (permanently removed) from the queue.
+    Drop = 0;
+
+    // DeadLetter
+    // represents a policy that when applied to the message will
+    DeadLetter = 1;
+  }
+
+  // policy represents drop policy for certain queue.
+  Policy policy = 1;
+
+  // dead_letter_queue_id is taking effect only when the policy
+  // is set to DeadLetter.
+  optional string dead_letter_queue_id = 2;
+}
+
+// CreateQueueResponse represents a request to purge
+// all messages from the specified queue.
 message CreateQueueResponse {
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
 }
 
+// PurgeQueueRequest
 message PurgeQueueRequest {
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
 }
 
+// PurgeQueueResponse represents a response the the purge queue request.
 message PurgeQueueResponse {
+  // messages_count represents an amount of deleted messages.
   int64 messages_count = 1;
 }
 
+// DeleteQueueRequest
 message DeleteQueueRequest {
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
+  // force
   bool force = 2;
 }
 
+// DeleteQueueResponse
 message DeleteQueueResponse {}
 
 // SendRequest represents the request which sends given Messages
 // to the specified queue.
 message SendRequest {
-  // queue_id represents unique queue identifier.
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
+
   // messages represents an array of messages which will be send to the queue.
   repeated SendMessage messages = 2;
 }
@@ -99,15 +173,17 @@ message SendRequest {
 // SendResponse represents the response to SendRequest which contain information
 // about the result of enqueueing messages that has been sent with request.
 message SendResponse {
+  // message_ids
   repeated string message_ids = 1;
 }
 
 // ReceiveRequest represents the request which receives Messages
 // from the specified queue.
 message ReceiveRequest {
-  // Represents unique queue identifier.
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
-  // Represents maximum number of messages to receive.
+
+  // batch_size represents maximum number of messages to receive.
   // The batch size is limited to 10 messages.
   // The valid values: from 1 to 10.
   // If 0 is specified the 1 will be used.
@@ -117,27 +193,35 @@ message ReceiveRequest {
 // ReceiveResponse represents the response.
 message ReceiveResponse {
   // messages represents an array of received messages from the queue.
-  repeated ReceiveMessage messages = 2;
+  repeated ReceiveMessage messages = 1;
 }
 
 // Delete message represents the request which will delete specified
 // messages from the queue.
 message DeleteRequest {
-  // queue_id represents unique queue identifier.
+  // queue_id represents the unique identifier for the queue.
   string queue_id = 1;
+
   // message_ids represents an array of message IDs which identifies
-  // he messages that should be deleted from the queue.
+  // the messages that should be deleted from the queue.
   repeated string message_ids = 2;
 }
 
 // DeleteResponse
 message DeleteResponse {
+  // successful
   repeated string successful = 1;
+
+  // failed
   repeated DeleteFailure failed = 2;
 }
 
+// DeleteFailure
 message DeleteFailure {
+  // message_id represents an identifier of the message which has to be deleted.
   string message_id = 1;
+
+  // error represents an error message which shows why delete message has failed.
   string error = 2;
 }
 
