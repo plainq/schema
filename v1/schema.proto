@@ -173,7 +173,7 @@ message SendRequest {
 // SendResponse represents the response to SendRequest which contain information
 // about the result of enqueueing messages that has been sent with request.
 message SendResponse {
-  // message_ids
+  // message_ids represents an array of message IDs that has been enqueued.
   repeated string message_ids = 1;
 }
 
@@ -207,16 +207,18 @@ message DeleteRequest {
   repeated string message_ids = 2;
 }
 
-// DeleteResponse
+// DeleteResponse represents a response to the DeleteRequest.
 message DeleteResponse {
-  // successful
+  // successful holds an array of message IDs
+  // that has been deleted from the queue.
   repeated string successful = 1;
 
-  // failed
+  // failed holds an array of message IDs that has not been deleted from the queue
+  // and associated error message.
   repeated DeleteFailure failed = 2;
 }
 
-// DeleteFailure
+// DeleteFailure holds an information about error of message deletion.
 message DeleteFailure {
   // message_id represents an identifier of the message which has to be deleted.
   string message_id = 1;
