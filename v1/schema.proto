@@ -122,7 +122,7 @@ message CreateQueueRequest {
   DropPolicy drop_policy = 5;
 
   // dead_letter_queue_id is taking effect only when the policy is set to DeadLetter.
-  optional string dead_letter_queue_id = 100;
+  string dead_letter_queue_id = 100;
 }
 
 // CreateQueueResponse represents a request to purge
