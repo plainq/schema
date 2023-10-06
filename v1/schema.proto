@@ -91,6 +91,19 @@ message DescribeQueueResponse {
   uint32 max_receive_attempts = 6;
 }
 
+// Policy represents an enumeration of supported policies.
+enum DropPolicy {
+  // DROP_POLICY_DROP is a default policy.
+  // When queue has to apply the drop policy to the message, the
+  // message will be dropped (permanently removed) from the queue.
+  DROP_POLICY_DROP = 0;
+
+  // DROP_POLICY_DEAD_LETTER represents a policy that when applied to the message,
+  // the message will be moved to another queue, which has been specified as
+  // dead letter queue.
+  DROP_POLICY_DEAD_LETTER = 1;
+}
+
 // CreateQueueRequest represents a request to create a queue.
 message CreateQueueRequest {
   // queue_name represents the name of the queue.
@@ -107,28 +120,9 @@ message CreateQueueRequest {
 
   // drop_policy defines queue behaviour when the retention_period_seconds or max_receive_attempts is reached.
   DropPolicy drop_policy = 5;
-}
 
-// DropPolicy represents a queue policy that a
-message DropPolicy {
-  // Policy represents an enumeration of supported policies.
-  enum Policy {
-    // Drop is a default policy.
-    // When queue has to apply the drop policy to the message, the
-    // message will be dropped (permanently removed) from the queue.
-    POLICY_DROP = 0;
-
-    // DeadLetter
-    // represents a policy that when applied to the message will
-    POLICY_DEAD_LETTER = 1;
-  }
-
-  // policy represents drop policy for certain queue.
-  Policy policy = 1;
-
-  // dead_letter_queue_id is taking effect only when the policy
-  // is set to DeadLetter.
-  optional string dead_letter_queue_id = 2;
+  // dead_letter_queue_id is taking effect only when the policy is set to DeadLetter.
+  optional string dead_letter_queue_id = 100;
 }
 
 // CreateQueueResponse represents a request to purge
