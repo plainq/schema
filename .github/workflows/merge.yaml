@@ -15,7 +15,7 @@ jobs:
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-lint-action@v1
 
-  bereking:
+  breaking:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
