@@ -1,33 +1,34 @@
 syntax = "proto3";
 
 package v1;
+
 option go_package = "github.com/plainq/go/v1";
 
 // PlainQ service represents logic of work with PlainQ queue broker.
 service PlainQService {
   // List all queues on the server.
-  rpc ListQueues (ListQueuesRequest) returns (ListQueuesResponse) {}
+  rpc ListQueues(ListQueuesRequest) returns (ListQueuesResponse) {}
 
   // DescribeQueue returns information about specified queue.
-  rpc DescribeQueue (DescribeQueueRequest) returns (DescribeQueueResponse) {}
+  rpc DescribeQueue(DescribeQueueRequest) returns (DescribeQueueResponse) {}
 
   // CreateQueue creates new queue.
-  rpc CreateQueue (CreateQueueRequest) returns (CreateQueueResponse) {}
+  rpc CreateQueue(CreateQueueRequest) returns (CreateQueueResponse) {}
 
   // PurgeQueue deletes all messages from the queue.
-  rpc PurgeQueue (PurgeQueueRequest) returns (PurgeQueueResponse) {}
+  rpc PurgeQueue(PurgeQueueRequest) returns (PurgeQueueResponse) {}
 
   // DeleteQueue deletes queue.
-  rpc DeleteQueue (DeleteQueueRequest) returns (DeleteQueueResponse) {}
+  rpc DeleteQueue(DeleteQueueRequest) returns (DeleteQueueResponse) {}
 
   // Send sends message to the queue.
-  rpc Send (SendRequest) returns (SendResponse) {}
+  rpc Send(SendRequest) returns (SendResponse) {}
 
   // Receive receives message from the queue.
-  rpc Receive (ReceiveRequest) returns (ReceiveResponse) {}
+  rpc Receive(ReceiveRequest) returns (ReceiveResponse) {}
 
   // Delete deletes message from the queue.
-  rpc Delete (DeleteRequest) returns (DeleteResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
 }
 
 // SendMessage represents a message which should be enqueued.
@@ -115,11 +116,11 @@ message DropPolicy {
     // Drop is a default policy.
     // When queue has to apply the drop policy to the message, the
     // message will be dropped (permanently removed) from the queue.
-    Drop = 0;
+    POLICY_DROP = 0;
 
     // DeadLetter
     // represents a policy that when applied to the message will
-    DeadLetter = 1;
+    POLICY_DEAD_LETTER = 1;
   }
 
   // policy represents drop policy for certain queue.
@@ -226,4 +227,3 @@ message DeleteFailure {
   // error represents an error message which shows why delete message has failed.
   string error = 2;
 }
-
