@@ -50,6 +50,12 @@ message ReceiveMessage {
 message ListQueuesRequest {
   // queue_prefix can be specified to search queues names of which starts with this prefix.
   string queue_prefix = 1;
+
+  // The page size for pagination.
+  int32 page_size = 2;
+
+  // The next page token from the previous request, if there was one.
+  string page_token = 3;
 }
 
 // ListQueuesResponse represents a response to ListQueuesRequest which
@@ -57,6 +63,9 @@ message ListQueuesRequest {
 message ListQueuesResponse {
   // queues represents a map of queue names to queue properties.
   map<string, DescribeQueueResponse> queues = 1;
+
+  // The token to be used for the next page of results. If empty, it indicates no more pages.
+  string next_page_token = 2;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
@@ -89,9 +98,15 @@ message DescribeQueueResponse {
 
   // max_receive_attempts defines the maximum number of times a message can be read before it is deleted.
   uint32 max_receive_attempts = 6;
+
+  // drop_policy defines queue behaviour when the retention_period_seconds or max_receive_attempts is reached.
+  DropPolicy drop_policy = 7;
+
+  // dead_letter_queue_id is taking effect only when the policy is set to DeadLetter.
+  string dead_letter_queue_id = 100;
 }
 
-// Policy represents an enumeration of supported policies.
+// DropPolicy represents an enumeration of supported policies.
 enum DropPolicy {
   // DROP_POLICY_DROP is a default policy.
   // When queue has to apply the drop policy to the message, the
