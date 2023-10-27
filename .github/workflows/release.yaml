@@ -1,7 +1,9 @@
 name: Merge
 
 on:
-  push:
+  release:
+    types:
+      - published
     paths-ignore:
       - '.github/workflows/pr.yml'
     branches:
@@ -35,5 +37,5 @@ jobs:
       - uses: bufbuild/buf-push-action@v1
         with:
           buf_token: ${{ secrets.BUF_TOKEN }}
-          create_visibility: private
-          draft: true
+          create_visibility: public
+          draft: false
