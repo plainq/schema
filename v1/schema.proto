@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "github.com/plainq/go/v1";
 
 // PlainQ service represents logic of work with PlainQ queue broker.
@@ -66,6 +68,7 @@ message ListQueuesResponse {
 
   // The token to be used for the next page of results. If empty, it indicates no more pages.
   string next_page_token = 2;
+  string prev_pege_token = 3;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
@@ -88,13 +91,13 @@ message DescribeQueueResponse {
   string queue_name = 2;
 
   // created_at denotes the timestamp when the queue was created.
-  int64 created_at = 3;
+  google.protobuf.Timestamp created_at = 3;
 
   // retention_period_seconds specifies the time after which messages in the queue expire.
-  int64 retention_period_seconds = 4;
+  uint64 retention_period_seconds = 4;
 
   // visibility_timeout_seconds is the time a message stays invisible after being read.
-  int64 visibility_timeout_seconds = 5;
+  uint64 visibility_timeout_seconds = 5;
 
   // max_receive_attempts defines the maximum number of times a message can be read before it is deleted.
   uint32 max_receive_attempts = 6;
@@ -125,10 +128,10 @@ message CreateQueueRequest {
   string queue_name = 1;
 
   // retention_period_seconds specifies the time after which messages in the queue expire.
-  int64 retention_period_seconds = 2;
+  uint64 retention_period_seconds = 2;
 
   // visibility_timeout_seconds is the time a message stays invisible after being read.
-  int64 visibility_timeout_seconds = 3;
+  uint64 visibility_timeout_seconds = 3;
 
   // max_receive_attempts defines the maximum number of times a message can be read before it is deleted.
   uint32 max_receive_attempts = 4;
@@ -156,7 +159,7 @@ message PurgeQueueRequest {
 // PurgeQueueResponse represents a response the the purge queue request.
 message PurgeQueueResponse {
   // messages_count represents an amount of deleted messages.
-  int64 messages_count = 1;
+  uint64 messages_count = 1;
 }
 
 // DeleteQueueRequest
