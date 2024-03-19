@@ -11,14 +11,14 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-lint-action@v1
 
   breaking:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-breaking-action@v1
         with:
@@ -30,10 +30,10 @@ jobs:
       - breaking
       - lint
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-push-action@v1
         with:
           buf_token: ${{ secrets.BUF_TOKEN }}
-          create_visibility: private
+          create_visibility: public
           draft: true
