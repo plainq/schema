@@ -51,15 +51,15 @@ message ReceiveMessage {
 // ListQueuesRequest represents a request to list queues.
 message ListQueuesRequest {
   // Enum for listing queues by basis (ID, Name, CreatedAt)
-  enum QueueOrderBy {
-    QUEUE_ID = 0;
-    QUEUE_NAME = 1;
-    QUEUE_CREATED_AT = 2;
+  enum OrderBy {
+    ORDER_BY_ID = 0;
+    ORDER_BY_NAME = 1;
+    ORDER_BY_CREATED_AT = 2;
   }
   // Enum for sort order (Ascending, Descending)
-  enum QueueSortBy {
-    SORT_ASC = 0;
-    SORT_DESC = 1;
+  enum SortBy {
+    SORT_BY_ASC = 0;
+    SORT_BY_DESC = 1;
   }
 
   // `queue_prefix` can be specified to search queues names of which starts with this prefix.
@@ -71,24 +71,26 @@ message ListQueuesRequest {
   // `page_token` from the previous request, if there was one.
   string page_token = 3;
 
-  // `orderByQueue` determines the Order By Basis (ID, Name, CreatedAt) for queues
-  QueueOrderBy orderByQueue = 4;
+  // `order_by` determines the Order By Basis (ID, Name, CreatedAt) for queues
+  OrderBy order_by = 4;
 
-  // `sortByQueue` determines the Sort Order (Ascending, Descending) for queues
-  QueueSortBy sortByQueue = 5;
+  // `sort_by` determines the Sort Order (Ascending, Descending) for queues
+  SortBy sort_by = 5;
 }
 
 // ListQueuesResponse represents a response to ListQueuesRequest which
 // holds a map of queue names to queue properties.
 message ListQueuesResponse {
   // `queueDetails` represents a map of queue names to queue properties.
-  map<string, DescribeQueueResponse> queueDetails = 1;
+  map<string, DescribeQueueResponse> queues = 1;
 
-  // `nextPageToken` is the token to be used for the next page of results. If empty, it indicates no more pages.
-  string nextPageToken = 2;
+  // `next_page_token` is the token to be used for the next page of results.
+  // If empty, it indicates no more pages.
+  string next_page_token = 2;
 
-  // `prevPageToken` is the token to be used for the previous page of results. If empty, it indicates no more previous pages.
-  string prevPageToken = 3;
+  // `prev_page_token` is the token to be used for the previous page of results.
+  // If empty, it indicates no more previous pages.
+  string prev_page_token = 3;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
