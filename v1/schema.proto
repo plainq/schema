@@ -50,25 +50,45 @@ message ReceiveMessage {
 
 // ListQueuesRequest represents a request to list queues.
 message ListQueuesRequest {
-  // queue_prefix can be specified to search queues names of which starts with this prefix.
+  // Enum for listing queues by basis (ID, Name, CreatedAt)
+  enum QueueOrderBy {
+    QUEUE_ID = 0;
+    QUEUE_NAME = 1;
+    QUEUE_CREATED_AT = 2;
+  }
+  // Enum for sort order (Ascending, Descending)
+  enum QueueSortBy {
+    SORT_ASC = 0;
+    SORT_DESC = 1;
+  }
+
+  // `queue_prefix` can be specified to search queues names of which starts with this prefix.
   string queue_prefix = 1;
 
-  // The page size for pagination.
+  // `page_size` for pagination.
   int32 page_size = 2;
 
-  // The next page token from the previous request, if there was one.
+  // `page_token` from the previous request, if there was one.
   string page_token = 3;
+
+  // `orderByQueue` determines the Order By Basis (ID, Name, CreatedAt) for queues
+  QueueOrderBy orderByQueue = 4;
+
+  // `sortByQueue` determines the Sort Order (Ascending, Descending) for queues
+  QueueSortBy sortByQueue = 5;
 }
 
 // ListQueuesResponse represents a response to ListQueuesRequest which
 // holds a map of queue names to queue properties.
 message ListQueuesResponse {
-  // queues represents a map of queue names to queue properties.
-  map<string, DescribeQueueResponse> queues = 1;
+  // `queueDetails` represents a map of queue names to queue properties.
+  map<string, DescribeQueueResponse> queueDetails = 1;
 
-  // The token to be used for the next page of results. If empty, it indicates no more pages.
-  string next_page_token = 2;
-  string prev_pege_token = 3;
+  // `nextPageToken` is the token to be used for the next page of results. If empty, it indicates no more pages.
+  string nextPageToken = 2;
+
+  // `prevPageToken` is the token to be used for the previous page of results. If empty, it indicates no more previous pages.
+  string prevPageToken = 3;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
