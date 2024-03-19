@@ -11,18 +11,15 @@ custom client for communication with plainq server.
 All RPC methods and their request and response structures are documented.
 You can find a documentation here:
 
-```
-https://buf.build/plainq/schema/docs/main:v1
-```
+[https://buf.build/plainq/schema/docs/main:v1](https://buf.build/plainq/schema/docs/main:v1)
+
 
 ## SDKs
 
 Buf Schema Registry automatically generate SDKs for some popular programming languages.
 You can find them here:
 
-```
-https://buf.build/plainq/schema/sdks/main
-```
+[https://buf.build/plainq/schema/sdks/main](https://buf.build/plainq/schema/sdks/main)
 
 ## Contribution
 
