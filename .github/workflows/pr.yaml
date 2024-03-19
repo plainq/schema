@@ -1,6 +1,7 @@
-name: Pull Request
+name: Pull Request | Merge
 
 on:
+  push:
   pull_request:
     paths-ignore:
       - '.github/workflows/merge.yml'
