@@ -82,7 +82,7 @@ message ListQueuesRequest {
 // holds a map of queue names to queue properties.
 message ListQueuesResponse {
   // `queueDetails` represents a map of queue names to queue properties.
-  map<string, DescribeQueueResponse> queues = 1;
+  repeated DescribeQueueResponse queues = 1;
 
   // `next_page_token` is the token to be used for the next page of results.
   // If empty, it indicates no more pages.
