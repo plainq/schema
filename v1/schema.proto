@@ -62,72 +62,68 @@ message ListQueuesRequest {
     SORT_BY_DESC = 1;
   }
 
-  // `queue_prefix` can be specified to search queues names of which starts with this prefix.
+  // Can be specified to search queues names of which starts with this prefix.
   string queue_prefix = 1;
 
-  // `page_size` for pagination.
+  // Page size for pagination.
   int32 page_size = 2;
 
   // `page_token` from the previous request, if there was one.
   string page_token = 3;
 
-  // `order_by` determines the Order By Basis (ID, Name, CreatedAt) for queues
+  // Determines the Order By Basis (ID, Name, CreatedAt) for queues.
   OrderBy order_by = 4;
 
-  // `sort_by` determines the Sort Order (Ascending, Descending) for queues
+  // Determines the Sort Order (Ascending, Descending) for queues.
   SortBy sort_by = 5;
 }
 
 // ListQueuesResponse represents a response to ListQueuesRequest which
 // holds a map of queue names to queue properties.
 message ListQueuesResponse {
-  // `queueDetails` represents a map of queue names to queue properties.
+  // Represents a map of queue names to queue properties.
   repeated DescribeQueueResponse queues = 1;
 
-  // `next_page_token` is the token to be used for the next page of results.
+  // Is the token to be used for the next page of results.
   // If empty, it indicates no more pages.
   string next_page_token = 2;
-
-  // `prev_page_token` is the token to be used for the previous page of results.
-  // If empty, it indicates no more previous pages.
-  string prev_page_token = 3;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
 // Queue can be searched by queue_id or by queue_name.
 // If both are set the queue_id will be used.
 message DescribeQueueRequest {
-  // queue_id represents the unique identifier for the queue.
+  // Represents the unique identifier for the queue.
   string queue_id = 1;
 
-  // queue_name represents the name of the queue.
+  // Represents the name of the queue.
   string queue_name = 2;
 }
 
 // DescribeQueueResponse provides detailed information about a queue.
 message DescribeQueueResponse {
-  // queue_id represents the unique identifier for the queue.
+  // Represents the unique identifier for the queue.
   string queue_id = 1;
 
-  // queue_name represents the name of the queue.
+  // Represents the name of the queue.
   string queue_name = 2;
 
-  // created_at denotes the timestamp when the queue was created.
+  // Denotes the timestamp when the queue was created.
   google.protobuf.Timestamp created_at = 3;
 
-  // retention_period_seconds specifies the time after which messages in the queue expire.
+  // Specifies the time after which messages in the queue expire.
   uint64 retention_period_seconds = 4;
 
-  // visibility_timeout_seconds is the time a message stays invisible after being read.
+  // Is the time a message stays invisible after being read.
   uint64 visibility_timeout_seconds = 5;
 
-  // max_receive_attempts defines the maximum number of times a message can be read before it is deleted.
+  // Defines the maximum number of times a message can be read before it is deleted.
   uint32 max_receive_attempts = 6;
 
-  // drop_policy defines queue behaviour when the retention_period_seconds or max_receive_attempts is reached.
+  // Defines queue behaviour when the retention_period_seconds or max_receive_attempts is reached.
   DropPolicy drop_policy = 7;
 
-  // dead_letter_queue_id is taking effect only when the policy is set to DeadLetter.
+  // Is taking effect only when the policy is set to DeadLetter.
   string dead_letter_queue_id = 100;
 }
 
