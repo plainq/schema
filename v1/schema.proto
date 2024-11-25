@@ -88,6 +88,10 @@ message ListQueuesResponse {
   // Is the token to be used for the next page of results.
   // If empty, it indicates no more pages.
   string next_page_token = 2;
+
+  // Is the token to be used for the previous page of results.
+  // If empty, it indicates no more previous pages.
+  string prev_page_token = 3;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
