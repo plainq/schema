@@ -134,19 +134,22 @@ message DescribeQueueResponse {
 
 // EvictionPolicy represents an enumeration of supported policies.
 enum EvictionPolicy {
+  // EVICTION_POLICY_UNSPECIFIED is a default policy.
+  EVICTION_POLICY_UNSPECIFIED = 0;
+
   // EVICTION_POLICY_DROP is a default policy.
   // When queue has to apply the eviction policy to the message, the
   // message will be dropped (permanently removed) from the queue.
-  EVICTION_POLICY_DROP = 0;
+  EVICTION_POLICY_DROP = 1;
 
-  // EVICTION_POLICY_DEAD_LETTER represents a policy that when applied to the message,
-  // the message will be moved to another queue, which has been specified as
-  // dead letter queue.
-  EVICTION_POLICY_DEAD_LETTER = 1;
+  // EVICTION_POLICY_DEAD_LETTER represents a policy that when applied
+  // to the message, the message will be moved to another queue, which has
+  // been specified as dead letter queue.
+  EVICTION_POLICY_DEAD_LETTER = 2;
 
-  // EVICTION_POLICY_REORDER represents a policy that when applied to the message,
-  // the message will be reinserted in the queue.
-  EVICTION_POLICY_REORDER = 2;
+  // EVICTION_POLICY_REORDER represents a policy that when applied
+  // to the message, the message will be reinserted in the queue.
+  EVICTION_POLICY_REORDER = 3;
 }
 
 // CreateQueueRequest represents a request to create a queue.
