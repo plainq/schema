@@ -66,13 +66,15 @@ message ListQueuesRequest {
   // Can be specified to search queues names of which starts with this prefix.
   string queue_prefix = 1;
 
-  // Page size for pagination.
-  int32 page_size = 2;
+  // Maximum number of items to return in the response.
+  // Must be >= 1 and <= 100. Default is 10.
+  int32 limit = 2;
 
-  // Page token from the previous request, if there was one.
-  string page_token = 3;
+  // Cursor for pagination. This should be the queue_id from the previous response.
+  // Leave empty for the first page.
+  string cursor = 3;
 
-  // Determines the Order By Basis (ID, Name, CreatedAt) for queues.
+  // Determines the Order By Basis for queues.
   OrderBy order_by = 4;
 
   // Determines the Sort Order (Ascending, Descending) for queues.
@@ -82,16 +84,17 @@ message ListQueuesRequest {
 // ListQueuesResponse represents a response to ListQueuesRequest which
 // holds a map of queue names to queue properties.
 message ListQueuesResponse {
-  // Represents a map of queue names to queue properties.
+  // List of queue properties
   repeated DescribeQueueResponse queues = 1;
 
-  // Is the token to be used for the next page of results.
-  // If empty, it indicates no more pages.
-  string next_page_token = 2;
+  // Cursor to get the next page. Empty if there are no more results.
+  string next_cursor = 2;
 
-  // Is the token to be used for the previous page of results.
-  // If empty, it indicates no more previous pages.
-  string prev_page_token = 3;
+  // Whether there are more results available
+  bool has_more = 3;
+
+  // Total number of queues matching the request criteria.
+  int64 total_count = 4;
 }
 
 // DescribeQueueRequest represents a request to describe specified queue.
